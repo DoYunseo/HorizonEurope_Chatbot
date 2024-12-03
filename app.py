@@ -1,12 +1,12 @@
 import streamlit as st
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 
 # OpenAI API 키 설정
-openai_api_key = "your api key"
+openai_api_key = "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"
 
 # 벡터 스토어 경로
 vector_store_path = "vector_store"
