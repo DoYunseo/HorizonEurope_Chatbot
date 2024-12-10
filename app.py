@@ -47,7 +47,7 @@ def build_rag_chain(vector_store):
 # Streamlit UI 구성
 def main():
     st.title("Horizon Europe Chatbot")
-    st.write("이 챗봇은 Horizon Europe 홈페이지의 데이터를 기반으로 영어질문에 답변합니다.")
+    st.write("이 챗봇은 Horizon Europe 홈페이지의 데이터를 기반으로 질문에 답변합니다.")
 
     # 벡터 스토어 로드
     st.sidebar.header("Vector Store Status")
@@ -67,7 +67,7 @@ def main():
         with st.spinner("Processing your query..."):
             try:
                 response = rag_chain({"query": user_input})
-                st.success("Answer:")
+                st.success("Answer")
                 st.write(response["result"])
             except Exception as e:
                 st.error(f"Error processing your query: {e}")
