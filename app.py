@@ -6,10 +6,10 @@ from langchain.prompts import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 
 # OpenAI API 키 설정
-openai_api_key = "your api key"
+api_key=st.secrets["OPENAI_API_KEY"]
 
 # 벡터 스토어 경로
-vector_store_path = "vector_store"
+vector_store_path = "new_vector_store"
 
 # 벡터 스토어 로드
 def load_vector_store(path):
@@ -76,8 +76,32 @@ def main():
         with st.expander("Searched documents"):
             relevant_docs = rag_chain.retriever.get_relevant_documents(user_input)
             for i, doc in enumerate(relevant_docs):
+                # 필요한 필드만 파싱
+                doc_data = extract_fields(doc.page_content)
                 st.write(f"**문서 {i + 1}:**")
-                st.write(doc.page_content)
+                st.write(f"RCN: {doc_data.get('rcn', 'N/A')}")
+                st.write(f"Project ID: {doc_data.get('Project ID', 'N/A')}")
+                st.write(f"Title: {doc_data.get('title', 'N/A')}")
+                st.write(f"Summary: {doc_data.get('summary', 'N/A')}")
+                st.write("---")
+
+# 문서 내용에서 필요한 필드 추출
+def extract_fields(content):
+    """
+    문서 내용을 파싱하여 필요한 필드를 추출합니다.
+    """
+    fields = {}
+    lines = content.split("\n")
+    for line in lines:
+        if "rcn" in line.lower():
+            fields["rcn"] = line.split(":", 1)[-1].strip()
+        elif "project id" in line.lower():
+            fields["Project ID"] = line.split(":", 1)[-1].strip()
+        elif "title" in line.lower():
+            fields["title"] = line.split(":", 1)[-1].strip()
+        elif "summary" in line.lower():
+            fields["summary"] = line.split(":", 1)[-1].strip()
+    return fields
 
 if __name__ == "__main__":
     main()
