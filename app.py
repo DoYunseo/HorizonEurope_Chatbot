@@ -24,15 +24,16 @@ def build_rag_chain(vector_store):
 
     # 프롬프트 정의
     prompt_template = PromptTemplate(
-        input_variables=["context", "question"],
-        template=(
-            "You are an AI assistant. Use the provided context to answer the question. "
-            "If the context does not have the answer, state that the information is not available.\n\n"
-            "Context:\n{context}\n\n"
-            "Question: {question}\n\n"
-            "Answer:"
+    input_variables=["context", "question"],
+    template=(
+        "당신은 다국어를 지원하는 AI 비서입니다. 질문의 언어가 한국어이면 한국어로 답변하고, 영어이면 영어로 답변하세요. "
+        "제공된 문맥을 활용하여 질문에 답변하세요. 문맥에 답이 없는 경우, 정보를 알 수 없다고 답하세요.\n\n"
+        "문맥:\n{context}\n\n"
+        "질문: {question}\n\n"
+        "답변:"
         )
     )
+
 
     retrieval_qa_chain = RetrievalQA.from_chain_type(
         llm=chat_model,
