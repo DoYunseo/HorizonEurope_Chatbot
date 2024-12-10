@@ -79,7 +79,6 @@ def main():
                 # 필요한 필드만 파싱
                 doc_data = extract_fields(doc.page_content)
                 st.write(f"**문서 {i + 1}:**")
-                st.write(f"RCN: {doc_data.get('rcn', 'N/A')}")
                 st.write(f"Project ID: {doc_data.get('Project ID', 'N/A')}")
                 st.write(f"Title: {doc_data.get('title', 'N/A')}")
                 st.write(f"Summary: {doc_data.get('summary', 'N/A')}")
