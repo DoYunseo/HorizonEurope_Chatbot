@@ -93,7 +93,7 @@ def extract_fields(content):
     fields = {}
     lines = content.split("\n")
     for line in lines:
-        elif "project id" in line.lower():
+        if "project id" in line.lower():
             fields["Project ID"] = line.split(":", 1)[-1].strip()
         elif "title" in line.lower():
             fields["title"] = line.split(":", 1)[-1].strip()
