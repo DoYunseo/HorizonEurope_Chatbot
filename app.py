@@ -25,7 +25,7 @@ if "messages" not in st.session_state:
     st.session_state["messages"] = []  # 대화 히스토리 저장
 
 # 벡터 스토어 로드
-vector_store_path = "new_vector_store"
+vector_store_path = "vector_store"
 embedding = OpenAIEmbeddings(model="text-embedding-ada-002")
 vector_store = FAISS.load_local(vector_store_path, embedding, allow_dangerous_deserialization=True)
 
