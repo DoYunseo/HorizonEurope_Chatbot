@@ -75,7 +75,6 @@ if prompt := st.chat_input("질문을 입력해주세요."):
         st.session_state["messages"].append({"role": "assistant", "content": f"프로젝트 웹사이트 링크: {website}"})
         with st.chat_message("assistant"):
             st.markdown(f"웹사이트 링크: {website}")
-    
     else:
         # AI 응답 처리
         with st.chat_message("assistant"):
@@ -90,9 +89,7 @@ if prompt := st.chat_input("질문을 입력해주세요."):
                 chain_type="stuff",
                 retriever=retriever,
                 return_source_documents=True,
-                chain_type_kwargs={
-                    "prompt": prompt_template  # 개선된 프롬프트 사용
-                }
+                chain_type_kwargs={"prompt": prompt_template}
             )
 
             # 대화 히스토리에서 모든 메시지를 유지하고, 최근 메시지를 포함한 질의 생성
@@ -101,11 +98,18 @@ if prompt := st.chat_input("질문을 입력해주세요."):
                 + "\n".join([f"{msg['role']}: {msg['content']}" for msg in st.session_state["messages"]])
                 + f"\n\n질문: {prompt}"
             )
+            
             result = qa_chain({"query": query_with_history})
-
-            # 실시간 타이핑 효과로 응답 표시 (띄어쓰기 그대로 유지)
             full_response = result["result"]
-            message_placeholder.markdown(f"{full_response}")
+
+            # 한 글자씩 출력하여 실시간 타이핑 효과 구현
+            displayed_text = ""
+            for char in full_response:
+                displayed_text += char
+                message_placeholder.markdown(displayed_text + "▌")  # 커서 효과 추가
+                time.sleep(0.02)  # 타이핑 속도 조절 (0.02초 간격)
+
+            message_placeholder.markdown(full_response)  # 최종 결과 표시
 
         # AI 응답을 세션 상태에 저장
         st.session_state["messages"].append({"role": "assistant", "content": full_response})
